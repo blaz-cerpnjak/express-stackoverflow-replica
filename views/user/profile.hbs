@@ -1,0 +1,55 @@
+{{> header }}
+
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <!-- User Image -->
+                <div class="card-header">Profile Picture</div>
+                <div class="card-body text-center">
+                    <img
+                            class="rounded-circle shadow-1-strong"
+                            src="../../{{showUser.image}}"
+                            alt="avatar"
+                            width="150"
+                            height="150"
+                    />
+                    <br>
+                    <hr>
+                    <!-- User Stats -->
+                    <div class="row">
+                        <button type="button" class="btn btn-light col ml-2">
+                            Questions <span class="badge badge-success ml-2">{{questionsCount}}</span>
+                        </button>
+                        <button type="button" class="btn btn-light col ml-2">
+                            Answers <span class="badge badge-success ml-2">{{answersCount}}</span>
+                        </button>
+                        <button type="button" class="btn btn-light col ml-1 mr-1">
+                            Accepted <span class="badge badge-success ml-2">{{acceptedCount}}</span>
+                        </button>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <!-- Account Details -->
+            <div class="card">
+                <div class="card-header">Account Details</div>
+                <div class="card-body">
+                    <!-- Username -->
+                    <div class="mb-3">
+                        <label class="small mb-1">Username</label>
+                        <p>{{showUser.username}}</p>
+                    </div>
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="small mb-1">Email address</label>
+                        <p>{{showUser.email}}
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

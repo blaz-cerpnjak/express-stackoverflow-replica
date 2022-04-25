@@ -1,0 +1,124 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4 bg-body rounded" style="padding-left: 7%; padding-right: 7%;">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+
+        <!-- Toggle button -->
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <!-- Brand Image -->
+            <a class="navbar-brand" href="/questions">
+                <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/0/02/Stack_Overflow_logo.svg"
+                        height="30"
+                        alt="StackOverflow Logo"
+                        loading="lazy"
+                />
+            </a>
+            <!-- Brand Image -->
+
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Products</a>
+                </li>
+            </ul>
+            <!-- Left links -->
+
+            <!-- Search Box -->
+            <form action="/questions/search" class="d-flex input-group" style="margin-left: 2%; margin-right: 2%;" method="GET">
+                <!-- Search Text -->
+                <input
+                        name="tags"
+                        type="search"
+                        class="form-control rounded"
+                        placeholder="Search"
+                        aria-label="Search"
+                        aria-describedby="search-addon"
+                />
+                <!-- Search Button -->
+                <button type="submit" class="btn btn-secondary">
+                      <i class="fas fa-search"></i>
+                </button>
+            </form>
+            <!-- Search Box -->
+        </div>
+        <!-- Collapsible wrapper -->
+
+        <!-- Right elements -->
+        {{#if userId}}
+        <div class="d-flex align-items-center">
+
+            <!-- Avatar -->
+            <form id="myform" action="/users/profile/{{userId}}" method="GET">
+                <a
+                        class="d-flex align-items-center hidden-arrow"
+                        onclick="document.getElementById('myform').submit()"
+                        role="button"
+                        data-mdb-toggle="dropdown"
+                        aria-expanded="false"
+                >
+                    <img
+                            src="../../{{user.image}}"
+                            class="rounded-circle"
+                            height="25"
+                            alt="avatar"
+                            loading="lazy"
+                    />
+                </a>
+            </form>
+
+            <!-- Notifications -->
+            <a
+                    class="nav-link dropdown-toggle hidden-arrow"
+                    href="#"
+                    id="navbarDropdownMenuLink"
+                    role="button"
+                    data-mdb-toggle="dropdown"
+                    aria-expanded="false"
+                    style="color: black;"
+            >
+                <i class="fas fa-bell fa-lg" style="color: black;"></i>
+                <span class="badge rounded-pill badge-notification bg-danger">2</span>
+            </a>
+
+            <!-- Logout -->
+            <form id="logoutForm" action="/users/logout" method="GET">
+                <a
+                        class="d-flex align-items-center hidden-arrow"
+                        onclick="document.getElementById('logoutForm').submit()"
+                        role="button"
+                        data-mdb-toggle="dropdown"
+                        aria-expanded="false"
+                >
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+            </form>
+        </div>
+        {{else}}
+        <div class="d-flex align-items-center">
+            <!-- Button Grid -->
+            <div class="d-grid gap-2 d-md-block">
+                <a type="button" href="/users/login" class="btn btn-primary">Login</a>
+                <a type="button" href="/users/register" class="btn btn-primary">Register</a>
+            </div>
+            <!-- Button Grid -->
+        </div>
+        {{/if}}
+        <!-- Right elements -->
+    </div>
+    <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->

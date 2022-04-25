@@ -1,0 +1,73 @@
+{{> header}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+
+        </div>
+        <div class="col-7">
+            <!-- Header -->
+            <div class="row">
+                <div class="col">
+                    <h3>All Questions</h3>
+                    <br>
+                    <p>{{data.questionsCount}}</p>
+                    <br>
+                </div>
+                <div class="col text-right">
+                    <a href="/questions/ask" type="button" class="btn btn-primary">Ask Question</a>
+                </div>
+            </div>
+            <!-- Header -->
+            <!-- List all questions -->
+            {{#each data.questions}}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{title}}</h5>
+                        <p class="card-text">{{tags}}</p>
+                        <a href="../questions/{{_id}}" class="btn btn-primary">Details</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{formattedDate}}
+                    </div>
+                </div>
+                <br>
+            {{/each}}
+            <!-- List all questions -->
+        </div>
+        <div class="col-3">
+            <!-- Card 1 -->
+            <div class="card">
+                <h5 class="card-header">Collectives</h5>
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text">The official Q&A channel for Google's Go Programming Language.</p>
+                    <a href="#" class="btn btn-primary">Join</a>
+                </div>
+            </div>
+            <!-- Card 1 -->
+            <br>
+            <!-- Card 2 -->
+            <div class="card">
+                <h5 class="card-header">Intel</h5>
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text">A space for developers to collaborate on Intel software tools, libraries, and resources. Share</p>
+                    <a href="#" class="btn btn-primary">Join</a>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <!-- Card 3 -->
+            <br>
+            <div class="card">
+                <h5 class="card-header">Twillio</h5>
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text">Twilio has democratized channels like voice, text, chat, video, and email by virtualizing the...</p>
+                    <a href="#" class="btn btn-primary">Join</a>
+                </div>
+            </div>
+            <!-- Card 3 -->
+        </div>
+    </div>
+</div>

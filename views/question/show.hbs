@@ -1,0 +1,443 @@
+{{> header }}
+
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+
+        </div>
+        <div class="col-7">
+            <!-- Question -->
+            <h3>{{data.question.title}}</h3>
+            <!-- Update, Delete, Edit -->
+            <div class="d-flex align-items-center mb-3">
+                <!-- Date -->
+                <p class="mb-0">
+                    Asked {{data.formattedDateTime}}
+                    <span class="badge bg-primary">Pending</span>
+                </p>
+                {{#if is_author}}
+                    <!-- Edit Button -->
+                    <button class="btn btn-primary d-flex align-items-center ms-2 btn-sm"><i class="fas fa-pencil-alt"></i></button>
+                    <!-- Delete Button -->
+                    <form action="/questions/{{data.question._id}}?_method=DELETE" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger d-flex align-items-center me-3 ms-2 btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                    </form>
+                {{/if}}
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-1">
+
+                </div>
+                <!-- Description -->
+                <div class="col-11">
+                    <p>{{data.question.description}}</p>
+                </div>
+            </div>
+            <br>
+            <!-- Tags -->
+            {{#each data.question.tags}}
+                <a href="#" class="badge badge-secondary">{{this}}</a>
+            {{/each}}
+            <div class="row">
+                <div class="col-7"></div>
+                <!-- User Image -->
+                <div class="col-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-start align-items-center">
+                                <img
+                                        class="rounded-circle shadow-1-strong me-3"
+                                        src="../{{data.author.image}}"
+                                        alt="avatar"
+                                        width="60"
+                                        height="60"
+                                />
+                                <div>
+                                    <a href="../users/profile/{{data.author.id}}" class="text-decoration-none fw-bold mb-1" style="color:black">{{data.author.username}}</a>
+                                    <p class="text-muted small mb-0">
+                                        Shared publicly - {{data.formattedDateTime}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- Question Comments -->
+            <div class="small d-flex justify-content-end">
+                <a type="button" id="toggleQuestionComment"  class="d-flex align-items-center me-3">
+                    <i class="far fa-comment-dots me-2"></i>
+                    <p class="mb-0">Comments</p>
+                </a>
+            </div>
+            <div class="addQuestionComment">
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-8">
+                        <br>
+                        <!-- Question Comments -->
+                        {{#each data.questionComments}}
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <p>{{comment}}</p>
+
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex flex-row align-items-center">
+                                            <img
+                                                    src="../{{user.image}}"
+                                                    alt="avatar"
+                                                    width="25"
+                                                    height="25"
+                                            />
+                                            <p class="small mb-0 ms-2">{{user.username}}</p>
+                                        </div>
+                                        <div class="d-flex flex-row align-items-center">
+                                            <p class="small text-muted mb-0">Upvote?</p>
+                                            <i
+                                                    class="far fa-thumbs-up mx-2 fa-xs text-black"
+                                                    style="margin-top: -0.16rem;"
+                                            ></i>
+                                            <p class="small text-muted mb-0">3</p>
+                                            {{#ifEquals user.id ../data.user_id}}
+                                                <form action="/questionComments/{{id}}?_method=DELETE" method="post">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <input type="hidden" name="question_id" value="{{../data.question._id}}">
+                                                    <button type="submit" class="btn btn-danger d-flex align-items-center me-3 ms-2 btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                                                </form>
+                                            {{/ifEquals}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                        <!-- Add Comment -->
+                        <div class="form-outline mb-4">
+                            <form action="/questionComments/" method="post">
+                                <input type="hidden" name="user_id" value="{{data.user_id}}">
+                                <input type="hidden" name="question_id" value="{{data.question._id}}">
+                                <input
+                                        type="text"
+                                        name="comment"
+                                        class="form-control"
+                                        placeholder="Type comment..."
+                                />
+                                <button type="submit" class="btn btn-primary btn-sm float-end mt-1">Post comment</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <!-- Accepted Answers -->
+            <div class="row d-flex justify-content-center">
+                <div class="col">
+                    {{#each data.answers}}
+                        {{#ifEquals accepted true}}
+                        <div class="card text-dark">
+                            <div class="row">
+                                <div class="col-1 align-self-center">
+                                    <button type="button" class="btn btn-outline-secondary ml-1 mb-1"><i class="fa-solid fa-chevron-up"></i></button>
+                                    <button type="button" class="btn btn-outline-secondary ml-1 mb-2"><i class="fa-solid fa-chevron-down"></i></button>
+                                    {{#if ../data.is_author}}
+                                        <form action="/answers/{{_id}}?_method=PUT" method="post">
+                                            <input type="hidden" name="_method" value="PUT">
+                                            {{#ifEquals accepted true}}
+                                                <input type="hidden" name="question_id" value="{{../data.question._id}}">
+                                                <input type="hidden" name="accepted" value="false">
+                                                <button type="submit" class="btn btn-success ml-1"><i class="fa-solid fa-check"></i></button>
+                                            {{else}}
+                                                <input type="hidden" name="question_id" value="{{../data.question._id}}">
+                                                <input type="hidden" name="accepted" value="true">
+                                                <button type="submit" class="btn btn-outline-success ml-1"><i class="fa-solid fa-check"></i></button>
+                                            {{/ifEquals}}
+                                        </form>
+                                    {{/if}}
+                                </div>
+                                <div class="col-11">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex flex-start">
+                                            <img
+                                                    class="rounded-circle shadow-1-strong me-3"
+                                                    src="../{{user.image}}"
+                                                    alt="avatar"
+                                                    width="60"
+                                                    height="60"
+                                            />
+                                            <div>
+                                                <a href="../users/profile/{{user.id}}" class="text-decoration-none fw-bold mb-1" style="color:black">{{user.username}}</a>
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <p class="mb-0">
+                                                        {{datetime}}
+                                                        {{#if accepted}}
+                                                            <span class="badge bg-success">Accepted</span>
+                                                        {{/if}}
+                                                    </p>
+                                                    {{#ifEquals user._id ../data.user_id}}
+                                                        <form action="/answers/{{_id}}?_method=DELETE" method="post">
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <input type="hidden" name="question_id" value="{{../data.question._id}}">
+                                                            <button type="submit" class="btn btn-danger d-flex align-items-center me-3 ms-2 btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                                                        </form>
+                                                    {{/ifEquals}}
+                                                </div>
+                                                <p class="mb-0">
+                                                    {{answer}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- Accepted Answer Comments -->
+                        <div class="row">
+                            <div class="col-4"></div>
+                            <div class="col-8">
+                                {{#each comments}}
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <p>{{comment}}</p>
+
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <img
+                                                            src="../{{user.image}}"
+                                                            alt="avatar"
+                                                            width="25"
+                                                            height="25"
+                                                    />
+                                                    <a href="../users/profile/{{user.id}}" class="text-decoration-none small mb-1 ms-2" style="color:black">{{user.username}}</a>
+                                                </div>
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <p class="small text-muted mb-0">Upvote?</p>
+                                                    <i
+                                                            class="far fa-thumbs-up mx-2 fa-xs text-black"
+                                                            style="margin-top: -0.16rem;"
+                                                    ></i>
+                                                    <p class="small text-muted mb-0">3</p>
+                                                    {{#ifEquals user._id ../../data.user_id}}
+                                                        <form action="/answerComments/{{_id}}?_method=DELETE" method="POST">
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <input type="hidden" name="answer_id" value="{{answer._id}}">
+                                                            <input type="hidden" name="question_id" value="{{../../data.question._id}}">
+                                                            <button type="submit" class="btn btn-danger d-flex align-items-center me-3 ms-2 btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                                                        </form>
+                                                    {{/ifEquals}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                                <!-- Add Answer Comment -->
+                                <div class="form-outline mb-4">
+                                    <form action="/answers/comment" method="post">
+                                        <input type="hidden" name="answer_id" value="{{id}}">
+                                        <input type="hidden" name="user_id" value="{{../data.user_id}}">
+                                        <input type="hidden" name="question_id" value="{{../data.question._id}}">
+                                        <input
+                                                type="text"
+                                                name="comment"
+                                                class="form-control"
+                                                placeholder="Type comment..."
+                                        />
+                                        <button type="submit" class="btn btn-primary btn-sm float-end mt-1">Post comment</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <hr class="my-0" style="height: 1px;" />
+                        <br>
+                        {{/ifEquals}}
+                    {{/each}}
+                </div>
+            </div>
+            <!-- Answers -->
+            <div class="row d-flex justify-content-center">
+                <div class="col">
+                    {{#each data.answers}}
+                        {{#ifEquals accepted false}}
+                        <div class="card text-dark">
+                            <div class="row">
+                                <div class="col-1 align-self-center">
+                                    <button type="button" class="btn btn-outline-secondary ml-1 mb-1"><i class="fa-solid fa-chevron-up"></i></button>
+                                    <button type="button" class="btn btn-outline-secondary ml-1 mb-2"><i class="fa-solid fa-chevron-down"></i></button>
+                                    {{#if ../data.is_author}}
+                                        <form action="/answers/{{_id}}?_method=PUT" method="post">
+                                            <input type="hidden" name="_method" value="PUT">
+                                            {{#ifEquals accepted true}}
+                                                <input type="hidden" name="question_id" value="{{../data.question._id}}">
+                                                <input type="hidden" name="accepted" value="false">
+                                                <button type="submit" class="btn btn-success ml-1"><i class="fa-solid fa-check"></i></button>
+                                            {{else}}
+                                                <input type="hidden" name="question_id" value="{{../data.question._id}}">
+                                                <input type="hidden" name="accepted" value="true">
+                                                <button type="submit" class="btn btn-outline-success ml-1"><i class="fa-solid fa-check"></i></button>
+                                            {{/ifEquals}}
+                                        </form>
+                                    {{/if}}
+                                </div>
+                                <div class="col-11">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex flex-start">
+                                            <img
+                                                    class="rounded-circle shadow-1-strong me-3"
+                                                    src="../{{user.image}}"
+                                                    alt="avatar"
+                                                    width="60"
+                                                    height="60"
+                                            />
+                                            <div>
+                                                <a href="../users/profile/{{user.id}}" class="text-decoration-none fw-bold mb-1" style="color:black">{{user.username}}</a>
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <p class="mb-0">
+                                                        {{datetime}}
+                                                        {{#if accepted}}
+                                                            <span class="badge bg-success">Accepted</span>
+                                                        {{/if}}
+                                                    </p>
+                                                    {{#ifEquals user._id ../data.user_id}}
+                                                        <form action="/answers/{{_id}}?_method=DELETE" method="post">
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <input type="hidden" name="question_id" value="{{../data.question._id}}">
+                                                            <button type="submit" class="btn btn-danger d-flex align-items-center me-3 ms-2 btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                                                        </form>
+                                                    {{/ifEquals}}
+                                                </div>
+                                                <p class="mb-0">
+                                                    {{answer}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- Answer Comments -->
+                        <div class="row">
+                            <div class="col-4"></div>
+                            <div class="col-8">
+                                {{#each comments}}
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <p>{{comment}}</p>
+
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <img
+                                                            src="../{{user.image}}"
+                                                            alt="avatar"
+                                                            width="25"
+                                                            height="25"
+                                                    />
+                                                    <a href="../users/profile/{{user.id}}" class="text-decoration-none small mb-1 ms-2" style="color:black">{{user.username}}</a>
+                                                </div>
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <p class="small text-muted mb-0">Upvote?</p>
+                                                    <i
+                                                            class="far fa-thumbs-up mx-2 fa-xs text-black"
+                                                            style="margin-top: -0.16rem;"
+                                                    ></i>
+                                                    <p class="small text-muted mb-0">3</p>
+                                                    {{#ifEquals user._id ../../data.user_id}}
+                                                        <form action="/answerComments/{{_id}}?_method=DELETE" method="POST">
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <input type="hidden" name="answer_id" value="{{answer._id}}">
+                                                            <input type="hidden" name="question_id" value="{{../../data.question._id}}">
+                                                            <button type="submit" class="btn btn-danger d-flex align-items-center me-3 ms-2 btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                                                        </form>
+                                                    {{/ifEquals}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                                <!-- Add Answer Comment -->
+                                <div class="form-outline mb-4">
+                                    <form action="/answers/comment" method="post">
+                                        <input type="hidden" name="answer_id" value="{{id}}">
+                                        <input type="hidden" name="user_id" value="{{../data.user_id}}">
+                                        <input type="hidden" name="question_id" value="{{../data.question._id}}">
+                                        <input
+                                                type="text"
+                                                name="comment"
+                                                class="form-control"
+                                                placeholder="Type comment..."
+                                        />
+                                        <button type="submit" class="btn btn-primary btn-sm float-end mt-1">Post comment</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <hr class="my-0" style="height: 1px;" />
+                        <br>
+                        {{/ifEquals}}
+                    {{/each}}
+                </div>
+            </div>
+            <br>
+            <br>
+            <!-- Answer Question -->
+            <p>Know someone who can answer? Share a link to this question via email, Twitter, or Facebook.</p>
+            <h5>Your Answer</h5>
+            <br>
+            <form action="../answers/" method="post">
+                <!-- User ID -->
+                <input type="hidden" name="user_id" value="{{data.user_id}}">
+                <!-- Question ID -->
+                <input type="hidden" name="question_id" value="{{data.question._id}}">
+                <!-- Answer Description -->
+                <div class="mb-3">
+                    <textarea name="answer" class="form-control" rows="10"></textarea>
+                </div>
+                <br>
+                <!-- Post Answer Buttons -->
+                <button type="submit" class="btn btn-primary">Post Your Answer</button>
+            </form>
+            <br>
+            <br>
+
+            <!-- Tags -->
+            <p>Browse other questions tagged
+                {{#each data.question.tags}}
+
+                    <form id="{{this}}" action="/questions/search" style="display: inline;" method="GET">
+                        <!-- Search Tag -->
+                        <input
+                                name="tags"
+                                type="hidden"
+                                value="{{this}}"
+                                placeholder="Search"
+                                aria-label="Search"
+                        />
+                        <a onclick="document.getElementById('{{this}}').submit()" style="margin: 0.2rem;" href="#" class="badge badge-secondary">{{this}}</a>
+                    </form>
+
+                {{/each}}
+                or <a href="../questions/ask">ask your own question</a>
+            </p>
+        </div>
+        <div class="col-3">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $(".addQuestionComment").hide();
+
+        $("#toggleQuestionComment").click(function(){
+            $(".addQuestionComment").toggle( 'slow', function(){
+
+            });
+        });
+    });
+</script>
