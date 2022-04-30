@@ -2,13 +2,18 @@
 
 This project is a simple web app, similar to StackOverflow.
 
-<p align="left">
-  <img src="./Images/login.png" width="700" />&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="./Images/ask.png" width="700" />&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="./Images/show.png" width="700" />&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="./Images/accepted.png" width="700" />&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="./Images/all_questions.png" width="700" />
-</p>
+## Images
+### Login page
+<img src="./Images/login.png" width="700" />&nbsp;&nbsp;&nbsp;&nbsp;
+### Ask questions page
+<img src="./Images/ask.png" width="700" />&nbsp;&nbsp;&nbsp;&nbsp;
+### Show question page
+<img src="./Images/show.png" width="700" />&nbsp;&nbsp;&nbsp;&nbsp;
+### Accept question
+<img src="./Images/accepted.png" width="700" />&nbsp;&nbsp;&nbsp;&nbsp;
+### Home page
+<img src="./Images/all_questions.png" width="700" />
+
 
 ## Implemented functionality: 
 - user authentication (sign up/sign in),
